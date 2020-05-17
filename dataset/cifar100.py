@@ -42,10 +42,11 @@ class CIFAR100Instance(datasets.CIFAR100):
     """
     def __getitem__(self, index):
         if self.train:
-            img, target = self.train_data[index], self.train_labels[index]
+            img, target = self.data[index], self.targets[index]
+            # img, target = self.train_data[index], self.train_labels[index]
         else:
-            img, target = self.test_data[index], self.test_labels[index]
-
+            img, target = self.data[index], self.targets[index]
+            # img, target = self.test_data[index], self.test_labels[index]
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
         img = Image.fromarray(img)
@@ -122,11 +123,15 @@ class CIFAR100InstanceSample(datasets.CIFAR100):
 
         num_classes = 100
         if self.train:
-            num_samples = len(self.train_data)
-            label = self.train_labels
+            num_samples = len(self.data)
+            label = self.targets
+            # num_samples = len(self.train_data)
+            # label = self.train_labels
         else:
-            num_samples = len(self.test_data)
-            label = self.test_labels
+            num_samples = len(self.data)
+            label = self.targets
+            # num_samples = len(self.test_data)
+            # label = self.test_labels
 
         self.cls_positive = [[] for i in range(num_classes)]
         for i in range(num_samples):
@@ -152,9 +157,11 @@ class CIFAR100InstanceSample(datasets.CIFAR100):
 
     def __getitem__(self, index):
         if self.train:
-            img, target = self.train_data[index], self.train_labels[index]
+            img, target = self.data[index], self.targets[index]
+            # img, target = self.train_data[index], self.train_labels[index]
         else:
-            img, target = self.test_data[index], self.test_labels[index]
+            img, target = self.data[index], self.targets[index]
+            # img, target = self.test_data[index], self.test_labels[index]
 
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
