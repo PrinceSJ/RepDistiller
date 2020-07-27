@@ -7,6 +7,7 @@ from PIL import Image
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
+from .color_transform import RGB2L
 
 """
 mean = {
@@ -42,11 +43,11 @@ class CIFAR100Instance(datasets.CIFAR100):
     """
     def __getitem__(self, index):
         if self.train:
-            img, target = self.data[index], self.targets[index]
-            # img, target = self.train_data[index], self.train_labels[index]
+            # img, target = self.data[index], self.targets[index]
+            img, target = self.train_data[index], self.train_labels[index]
         else:
-            img, target = self.data[index], self.targets[index]
-            # img, target = self.test_data[index], self.test_labels[index]
+            # img, target = self.data[index], self.targets[index]
+            img, target = self.test_data[index], self.test_labels[index]
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
         img = Image.fromarray(img)
@@ -66,13 +67,17 @@ def get_cifar100_dataloaders(batch_size=128, num_workers=8, is_instance=False):
     """
     data_folder = get_data_folder()
 
+    color_transfer = RGB2L()
+
     train_transform = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
+        color_transfer,
         transforms.ToTensor(),
         transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)),
     ])
     test_transform = transforms.Compose([
+        color_transfer,
         transforms.ToTensor(),
         transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)),
     ])
@@ -123,15 +128,15 @@ class CIFAR100InstanceSample(datasets.CIFAR100):
 
         num_classes = 100
         if self.train:
-            num_samples = len(self.data)
-            label = self.targets
-            # num_samples = len(self.train_data)
-            # label = self.train_labels
+            # num_samples = len(self.data)
+            # label = self.targets
+            num_samples = len(self.train_data)
+            label = self.train_labels
         else:
-            num_samples = len(self.data)
-            label = self.targets
-            # num_samples = len(self.test_data)
-            # label = self.test_labels
+            # num_samples = len(self.data)
+            # label = self.targets
+            num_samples = len(self.test_data)
+            label = self.test_labels
 
         self.cls_positive = [[] for i in range(num_classes)]
         for i in range(num_samples):
@@ -157,11 +162,11 @@ class CIFAR100InstanceSample(datasets.CIFAR100):
 
     def __getitem__(self, index):
         if self.train:
-            img, target = self.data[index], self.targets[index]
-            # img, target = self.train_data[index], self.train_labels[index]
+            # img, target = self.data[index], self.targets[index]
+            img, target = self.train_data[index], self.train_labels[index]
         else:
-            img, target = self.data[index], self.targets[index]
-            # img, target = self.test_data[index], self.test_labels[index]
+            # img, target = self.data[index], self.targets[index]
+            img, target = self.test_data[index], self.test_labels[index]
 
         # doing this so that it is consistent with all other datasets
         # to return a PIL Image
@@ -198,9 +203,12 @@ def get_cifar100_dataloaders_sample(batch_size=128, num_workers=8, k=4096, mode=
     """
     data_folder = get_data_folder()
 
+    # color_transfer = RGB2L()
+
     train_transform = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
+        # color_transfer,
         transforms.ToTensor(),
         transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)),
     ])

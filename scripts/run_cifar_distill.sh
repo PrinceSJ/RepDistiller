@@ -27,6 +27,7 @@ python train_student.py --path_t ./save/models/resnet32x4_vanilla/ckpt_epoch_240
 python train_student.py --path_t ./save/models/resnet32x4_vanilla/ckpt_epoch_240.pth --distill nst --model_s resnet8x4 -a 0 -b 50 --trial 1
 # CRD
 python train_student.py --path_t ./save/models/resnet32x4_vanilla/ckpt_epoch_240.pth --distill crd --model_s resnet8x4 -a 0 -b 0.8 --trial 1
+python train_student.py --path_t ./save/models/vgg13_vanilla/ckpt_epoch_240.pth --distill crd --model_s vgg8 -r 0 -a 0 -b 0.8 --trial 1
 
 # CRD+KD
 python train_student.py --path_t ./save/models/resnet32x4_vanilla/ckpt_epoch_240.pth --distill crd --model_s resnet8x4 -a 1 -b 0.8 --trial 1
