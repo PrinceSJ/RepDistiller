@@ -7,7 +7,7 @@ from PIL import Image
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
-from .color_transform import RGB2L
+from .color_transform import RGB2L, RGB2ab
 
 """
 mean = {
@@ -66,8 +66,9 @@ def get_cifar100_dataloaders(batch_size=128, num_workers=8, is_instance=False):
     cifar 100
     """
     data_folder = get_data_folder()
-
-    color_transfer = RGB2L()
+    
+    # for cross-modal
+    color_transfer = RGB2ab()
 
     train_transform = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
@@ -203,16 +204,18 @@ def get_cifar100_dataloaders_sample(batch_size=128, num_workers=8, k=4096, mode=
     """
     data_folder = get_data_folder()
 
-    # color_transfer = RGB2L()
+    # for cross-modal
+    color_transfer = RGB2ab()
 
     train_transform = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
-        # color_transfer,
+        color_transfer,
         transforms.ToTensor(),
         transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)),
     ])
     test_transform = transforms.Compose([
+        color_transfer,
         transforms.ToTensor(),
         transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)),
     ])
