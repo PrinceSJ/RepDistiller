@@ -10,7 +10,7 @@ https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py
 import torch.nn as nn
 import torch.nn.functional as F
 import math
-
+from torchsummary import summary
 
 __all__ = ['resnet']
 
@@ -242,15 +242,19 @@ if __name__ == '__main__':
     import torch
 
     x = torch.randn(2, 3, 32, 32)
-    net = resnet32x4(num_classes=20)
+    net = resnet8x4(num_classes=20)
     feats, logit = net(x, is_feat=True, preact=True)
 
-    for f in feats:
-        print(f.shape, f.min().item())
-    print(logit.shape)
+    #using torchsummary 
+    net.cuda()
+    summary(net,(3,32,32))
 
-    for m in net.get_bn_before_relu():
-        if isinstance(m, nn.BatchNorm2d):
-            print('pass')
-        else:
-            print('warning')
+    # for f in feats:
+    #     print(f.shape, f.min().item())
+    # print(logit.shape)
+
+    # for m in net.get_bn_before_relu():
+    #     if isinstance(m, nn.BatchNorm2d):
+    #         print('pass')
+    #     else:
+    #         print('warning')
