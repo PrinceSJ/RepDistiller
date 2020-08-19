@@ -7,7 +7,7 @@ from PIL import Image
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
-from .color_transform import RGB2L, RGB2ab
+from .utils import RGB2L, RGB2ab
 
 """
 mean = {

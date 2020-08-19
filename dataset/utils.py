@@ -1,8 +1,28 @@
+from __future__ import print_function
+
 import numpy as np
+from skimage import color
 from torchvision import datasets
 from .cifar100 import CIFAR100Instance
 
-def main():    
+
+class RGB2L(object):
+    """Convert RGB PIL image to ndarray Lab and keep only L-dimension"""
+    def __call__(self, img):
+        img = np.asarray(img, np.uint8)
+        img = color.rgb2lab(img)        #(32,32,3)
+        img[:,:,1:]=0
+        return img
+
+class RGB2ab(object):
+    """Convert RGB PIL image to ndarray Lab and keep ab-dimension"""
+    def __call__(self, img):
+        img = np.asarray(img, np.uint8)
+        img = color.rgb2lab(img)
+        img[:,:,0]=0
+        return img
+
+def m_std():    
     data_folder = './data'
 
     train_data = CIFAR100Instance(root=data_folder,
@@ -19,5 +39,7 @@ def main():
     # the the mean and std
     print(train_mean, train_std)
 
-if __name__ == '__main__':
-    main()
+
+
+# if __name__ == '__main__':
+    # main()
