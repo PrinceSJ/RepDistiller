@@ -14,7 +14,7 @@ import torch.backends.cudnn as cudnn
 from models import model_dict
 
 from dataset.cifar100 import get_cifar100_dataloaders
-
+from dataset.covidCT import get_covidCT_dataloaders
 from helper.util import adjust_learning_rate, accuracy, AverageMeter
 from helper.loops import train_vanilla as train, validate
 
@@ -25,10 +25,12 @@ def parse_option():
 
     parser = argparse.ArgumentParser('argument for training')
 
+    parser.add_argument('--classes', type=int, default=2,help='number of classes')
+    parser.add_argument('--dataset_path', type=str, default='./MedData/data', help='dataset path')
     parser.add_argument('--print_freq', type=int, default=100, help='print frequency')
     parser.add_argument('--tb_freq', type=int, default=500, help='tb frequency')
     parser.add_argument('--save_freq', type=int, default=40, help='save frequency')
-    parser.add_argument('--batch_size', type=int, default=64, help='batch_size')
+    parser.add_argument('--batch_size', type=int, default=16, help='batch_size')
     parser.add_argument('--num_workers', type=int, default=8, help='num of workers to use')
     parser.add_argument('--epochs', type=int, default=240, help='number of training epochs')
 
@@ -45,7 +47,7 @@ def parse_option():
                                  'resnet8x4', 'resnet32x4', 'wrn_16_1', 'wrn_16_2', 'wrn_40_1', 'wrn_40_2',
                                  'vgg8', 'vgg11', 'vgg13', 'vgg16', 'vgg19',
                                  'MobileNetV2', 'ShuffleV1', 'ShuffleV2', ])
-    parser.add_argument('--dataset', type=str, default='med', choices=['cifar100','med'], help='dataset')
+    parser.add_argument('--dataset', type=str, default='covidCT', choices=['cifar100','covidCT'], help='dataset')
 
     parser.add_argument('-t', '--trial', type=int, default=0, help='the experiment id')
 
@@ -91,8 +93,9 @@ def main():
     if opt.dataset == 'cifar100':
         train_loader, val_loader = get_cifar100_dataloaders(batch_size=opt.batch_size, num_workers=opt.num_workers)
         n_cls = 100
-    elif opt.dataset == 'med':
-        train_loader, val_loader = 
+    elif opt.dataset == 'covidCT':
+        train_loader, val_loader = get_covidCT_dataloaders(opt)
+        # print(list(train_loader)[0])
         n_cls = 2
     else:
         raise NotImplementedError(opt.dataset)

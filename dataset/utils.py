@@ -3,7 +3,7 @@ from __future__ import print_function
 import numpy as np
 from skimage import color
 from torchvision import datasets
-from cifar100 import CIFAR100Instance
+from .cifar100 import CIFAR100Instance
 
 
 # class RGB2L(object):
@@ -71,6 +71,7 @@ def read_filepaths2(file):
                 break
             try:
                 subjid, path1, path2, label = line.split(' ')
+                # print(label)
                 path = path1 + ' ' + path2
             except:
                 print(line)

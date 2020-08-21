@@ -70,7 +70,7 @@ def get_cifar100_dataloaders(batch_size=128, num_workers=8, is_instance=False):
     # for cross-modal
     # color_transfer = RGB2ab()
 
-    """ todo: mean&std in Lab space  """
+    # """ todo: mean&std in Lab space  """
     train_transform = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
