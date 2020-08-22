@@ -231,7 +231,11 @@ def resnet110(**kwargs):
 
 
 def resnet8x4(**kwargs):
+    # for cifar
     return ResNet(8, [32, 64, 128, 256], 'basicblock', **kwargs)
+    
+    # for covidCT
+    # return  ResNet(8, [224, 448, 896, 1792], 'basicblock', **kwargs)
 
 
 def resnet32x4(**kwargs):

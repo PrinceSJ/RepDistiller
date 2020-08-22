@@ -25,20 +25,20 @@ def parse_option():
 
     parser = argparse.ArgumentParser('argument for training')
 
-    parser.add_argument('--classes', type=int, default=2,help='number of classes')
+    parser.add_argument('--classes', type=int, default=2, help='number of classes')
     parser.add_argument('--dataset_path', type=str, default='./MedData/data', help='dataset path')
     parser.add_argument('--print_freq', type=int, default=100, help='print frequency')
     parser.add_argument('--tb_freq', type=int, default=500, help='tb frequency')
     parser.add_argument('--save_freq', type=int, default=40, help='save frequency')
     parser.add_argument('--batch_size', type=int, default=16, help='batch_size')
     parser.add_argument('--num_workers', type=int, default=8, help='num of workers to use')
-    parser.add_argument('--epochs', type=int, default=240, help='number of training epochs')
+    parser.add_argument('--epochs', type=int, default=500, help='number of training epochs')    #240
 
     # optimization
-    parser.add_argument('--learning_rate', type=float, default=0.05, help='learning rate')
-    parser.add_argument('--lr_decay_epochs', type=str, default='150,180,210', help='where to decay lr, can be a list')
+    parser.add_argument('--learning_rate', type=float, default=1e-4, help='learning rate') #0.05
+    parser.add_argument('--lr_decay_epochs', type=str, default='150,180,210,300,410', help='where to decay lr, can be a list') #15,18,21+0
     parser.add_argument('--lr_decay_rate', type=float, default=0.1, help='decay rate for learning rate')
-    parser.add_argument('--weight_decay', type=float, default=5e-4, help='weight decay')
+    parser.add_argument('--weight_decay', type=float, default=1e-7, help='weight decay')        #5e-4
     parser.add_argument('--momentum', type=float, default=0.9, help='momentum')
 
     # dataset
@@ -133,10 +133,10 @@ def main():
         logger.log_value('train_acc', train_acc, epoch)
         logger.log_value('train_loss', train_loss, epoch)
 
-        test_acc, test_acc_top5, test_loss = validate(val_loader, model, criterion, opt)
+        test_acc, test_loss = validate(val_loader, model, criterion, opt)  #return test_acc_top5,
 
         logger.log_value('test_acc', test_acc, epoch)
-        logger.log_value('test_acc_top5', test_acc_top5, epoch)
+        #logger.log_value('test_acc_top5', test_acc_top5, epoch)
         logger.log_value('test_loss', test_loss, epoch)
 
         # save the best model

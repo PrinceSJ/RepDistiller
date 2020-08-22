@@ -71,11 +71,11 @@ class COVID_CT_Dataset(Dataset):
 
         image = Image.open(img_path).convert('RGB')
 
-        inputsize = 224
+        inputsize = 32      # 224
         transform = {
             'train': transforms.Compose(
                 [transforms.Resize(256),
-                 transforms.RandomCrop(224),
+                 transforms.RandomCrop(32,padding=4),  # 224
                  transforms.RandomHorizontalFlip(),
                  transforms.RandomVerticalFlip(),
                  ]),
