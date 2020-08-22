@@ -36,9 +36,9 @@ def parse_option():
 
     # optimization
     parser.add_argument('--learning_rate', type=float, default=1e-4, help='learning rate') #0.05
-    parser.add_argument('--lr_decay_epochs', type=str, default='150,180,210,300,410', help='where to decay lr, can be a list') #15,18,21+0
+    parser.add_argument('--lr_decay_epochs', type=str, default='150, 300, 450', help='where to decay lr, can be a list') #15,18,21+0
     parser.add_argument('--lr_decay_rate', type=float, default=0.1, help='decay rate for learning rate')
-    parser.add_argument('--weight_decay', type=float, default=1e-7, help='weight decay')        #5e-4
+    parser.add_argument('--weight_decay', type=float, default=1e-6, help='weight decay')        #5e-4
     parser.add_argument('--momentum', type=float, default=0.9, help='momentum')
 
     # dataset
@@ -103,11 +103,17 @@ def main():
     # model
     model = model_dict[opt.model](num_classes=n_cls)
 
-    # optimizer
-    optimizer = optim.SGD(model.parameters(),
-                          lr=opt.learning_rate,
-                          momentum=opt.momentum,
-                          weight_decay=opt.weight_decay)
+    # optimizer SGD
+    # optimizer = optim.SGD(model.parameters(),
+    #                       lr=opt.learning_rate,
+    #                       momentum=opt.momentum,
+    #                       weight_decay=opt.weight_decay)
+
+    # optimizer Adam
+    optimizer = optim.Adam(model.parameters(),
+                           lr=opt.learning_rate,
+                           weight_decay=opt.weight_decay)
+
 
     criterion = nn.CrossEntropyLoss()
 
